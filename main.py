@@ -37,6 +37,12 @@ def validate(text):
     lines = text.split("\n")
     if len(lines) != 1:
         raise ValueError("entry must be exactly one line, got %d" % len(lines))
+    # A carriage return is a line break to some readers, and any other
+    # control character is junk the judge never asked for: the gate is
+    # one clean line, so reject them all (the entry line has none).
+    for ch in text:
+        if ord(ch) < 0x20 or ord(ch) == 0x7F:
+            raise ValueError("entry must not contain control characters")
     return True
 
 
